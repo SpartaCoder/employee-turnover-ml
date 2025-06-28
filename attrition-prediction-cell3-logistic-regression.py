@@ -20,7 +20,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 # --- Initialize and train the Logistic Regression model ---
-logreg = LogisticRegression(max_iter=1000, random_state=42)
+# Increased max_iter to 3000 to prevent ConvergenceWarning
+logreg = LogisticRegression(max_iter=3000, random_state=42)
 logreg.fit(X_train, y_train)
 
 # --- Make predictions on the test set ---
