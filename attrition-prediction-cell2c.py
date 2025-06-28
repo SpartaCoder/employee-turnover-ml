@@ -1,25 +1,30 @@
-# Cell 2c: Bar chart showing % of records with Attrition = "Yes" by Department
+# Cell 2c: ML Model Metrics DataFrame Creation
 
-# Make sure to use the current training data (after any column removals)
-# If using balanced_train or data_for_model, adjust the variable accordingly
-department_col = 'Department'
-attrition_col = 'Attrition'
+import pandas as pd
 
-# Confirm the column still exists after preprocessing
-if department_col in balanced_train.columns:
-    dept_attrition = (
-        balanced_train.groupby(department_col)[attrition_col]
-        .apply(lambda x: (x == 1).mean() * 100)
-        .sort_values(ascending=False)
-    )
+# Define the columns for model evaluation metrics
+metrics_columns = [
+    "ML Model",
+    "accuracy",
+    "specificity",
+    "sensitivity",
+    "precision",
+    "root mean absolute error",
+    "mean cv accuracy"
+]
 
-    plt.figure(figsize=(8, 5))
-    dept_attrition.plot(kind='bar', color='teal')
-    plt.ylabel('% Attrition = "Yes"')
-    plt.title('Attrition Rate by Department')
-    plt.ylim(0, 100)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
-else:
-    print(f"Column '{department_col}' not found in training data.")
+# Create an empty DataFrame to store results for each ML model
+model_metrics_df = pd.DataFrame(columns=metrics_columns)
+
+# Example: To add results for a particular model, use the following code:
+# model_metrics_df = model_metrics_df.append({
+#     "ML Model": "RandomForest",
+#     "accuracy": accuracy_value,
+#     "specificity": specificity_value,
+#     "sensitivity": sensitivity_value,
+#     "precision": precision_value,
+#     "root mean absolute error": rmae_value,
+#     "mean cv accuracy": mean_cv_accuracy_value
+# }, ignore_index=True)
+
+# The DataFrame `model_metrics_df` can then be used to store and display results for each trained model.
