@@ -10,6 +10,7 @@ from sklearn.metrics import (
 from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd  # Make sure pandas is imported for concat
 
 # --- Prepare features (X) and target (y) from train_balanced DataFrame ---
 X = train_balanced.drop('Attrition', axis=1)
@@ -78,8 +79,11 @@ new_metrics = {
     "mean cv accuracy": np.mean(cv_scores)
 }
 
-# Append to the DataFrame
-model_metrics_df = model_metrics_df.append(new_metrics, ignore_index=True)
+# Append to the DataFrame using pd.concat (instead of append)
+model_metrics_df = pd.concat(
+    [model_metrics_df, pd.DataFrame([new_metrics])],
+    ignore_index=True
+)
 
 # (Optional) Save the updated DataFrame if needed:
 # model_metrics_df.to_pickle('model_metrics_df.pkl')
