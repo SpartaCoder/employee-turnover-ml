@@ -60,8 +60,8 @@ rmae = np.sqrt(mae)
 print("Root Mean Absolute Error (RMAE):", rmae)
 
 # --- At the end of attrition-prediction-cell3-logistic-regression.py ---
-# Assuming 'confusion' is a 2x2 matrix: [[TN, FP], [FN, TP]]
-TN, FP, FN, TP = confusion.ravel()
+# Assuming 'cm' is a 2x2 matrix: [[TN, FP], [FN, TP]]
+TN, FP, FN, TP = cm.ravel()
 specificity = TN / (TN + FP) if (TN + FP) > 0 else 0
 sensitivity = TP / (TP + FN) if (TP + FN) > 0 else 0
 accuracy = (TP + TN) / (TP + TN + FP + FN) if (TP + TN + FP + FN) > 0 else 0
