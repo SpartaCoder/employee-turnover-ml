@@ -1,33 +1,26 @@
-# Cell 2a: Compute and visualize correlation matrix to identify features with no correlation to Attrition
-# Uses only matplotlib (no seaborn dependency)
+# Cell 2a: Identify features with weak or NaN correlation with Attrition and visualize
 
-# Compute correlation matrix using only numeric columns
-cor_matrix = balanced_train.corr(numeric_only=True)
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Correlation of all features with 'Attrition'
-corr_with_attrition = cor_matrix['Attrition'].drop('Attrition').sort_values(key=abs, ascending=False)
-print("Correlation of features with Attrition:")
-print(corr_with_attrition)
+# Identify features to remove: correlation is NaN or between -0.1 and 0.1 (exclusive)
+corr_mask = corr_with_attrition.isna() | ((corr_with_attrition > -0.1) & (corr_with_attrition < 0.1))
+cols_to_remove = corr_with_attrition[corr_mask].index.tolist()
 
-# Show features with low correlation (absolute value < 0.01)
-no_corr_features = corr_with_attrition[abs(corr_with_attrition) < 0.01].index.tolist()
-print("\nFeatures with near-zero correlation to Attrition (|corr| < 0.01):")
-print(no_corr_features)
+if cols_to_remove:
+    print(f"Columns with weak or NaN correlation with Attrition: {cols_to_remove}")
 
-# Visualize correlation matrix as a heatmap using matplotlib only
-plt.figure(figsize=(12, 8))
-plt.imshow(cor_matrix, cmap='coolwarm', interpolation='nearest')
-plt.colorbar()
-plt.xticks(range(len(cor_matrix.columns)), cor_matrix.columns, rotation=90)
-plt.yticks(range(len(cor_matrix.index)), cor_matrix.index)
-plt.title('Correlation Matrix (All Features)')
-plt.tight_layout()
-plt.show()
+# Create a new dataframe, model_train, that excludes columns to remove
+model_train = train.drop(columns=[col for col in cols_to_remove if col in train.columns])
 
-# Optionally, plot only correlations with Attrition as a bar chart
-plt.figure(figsize=(4, len(corr_with_attrition) * 0.4))
-plt.barh(corr_with_attrition.index, corr_with_attrition.values)
-plt.title('Feature Correlation with Attrition')
-plt.xlabel('Correlation Coefficient')
-plt.tight_layout()
-plt.show()
+# Table visualization of the correlation matrix, highlighting features to be removed in red font
+cor_df = corr_with_attrition.to_frame(name='Correlation')
+cor_df['To Remove'] = cor_df.index.isin(cols_to_remove)
+styled = cor_df.style.apply(
+    lambda col: ['color: red' if rem else '' for rem in cor_df['To Remove']],
+    subset=['Correlation']
+).format({'Correlation': "{:.2f}"})
+
+from IPython.display import display
+display(styled)
