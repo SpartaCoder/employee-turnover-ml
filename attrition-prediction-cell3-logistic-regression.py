@@ -7,6 +7,7 @@ from sklearn.metrics import (
     accuracy_score, classification_report, confusion_matrix,
     ConfusionMatrixDisplay, mean_absolute_error
 )
+from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -48,19 +49,12 @@ plt.title("10-Fold CV Accuracy: Logistic Regression")
 plt.xlabel("Accuracy")
 plt.show()
 
-from sklearn.preprocessing import LabelEncoder
-
-# --- Encode the labels for MAE calculation ---
+# --- Encode the labels for MAE calculation to avoid ValueError ---
 le = LabelEncoder()
 y_test_num = le.fit_transform(y_test)
-y_pred_num = le.transform(y_pred)  # Use transform (not fit_transform) to avoid changing label mapping
+y_pred_num = le.transform(y_pred)  # Use transform, not fit_transform
 
 # --- Calculate and print Root Mean Absolute Error (RMAE) ---
 mae = mean_absolute_error(y_test_num, y_pred_num)
-rmae = np.sqrt(mae)
-print("Root Mean Absolute Error (RMAE):", rmae)
-
-# --- Calculate and print Root Mean Absolute Error (RMAE) ---
-mae = mean_absolute_error(y_test, y_pred)
 rmae = np.sqrt(mae)
 print("Root Mean Absolute Error (RMAE):", rmae)
