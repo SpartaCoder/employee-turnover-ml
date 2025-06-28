@@ -58,3 +58,30 @@ y_pred_num = le.transform(y_pred)  # Use transform, not fit_transform
 mae = mean_absolute_error(y_test_num, y_pred_num)
 rmae = np.sqrt(mae)
 print("Root Mean Absolute Error (RMAE):", rmae)
+
+# --- At the end of attrition-prediction-cell3-logistic-regression.py ---
+# Assuming 'confusion' is a 2x2 matrix: [[TN, FP], [FN, TP]]
+TN, FP, FN, TP = confusion.ravel()
+specificity = TN / (TN + FP) if (TN + FP) > 0 else 0
+sensitivity = TP / (TP + FN) if (TP + FN) > 0 else 0
+accuracy = (TP + TN) / (TP + TN + FP + FN) if (TP + TN + FP + FN) > 0 else 0
+precision = TP / (TP + FP) if (TP + FP) > 0 else 0
+
+# Prepare the new row as a dictionary
+new_metrics = {
+    "ML Model": "Logistic Regression",
+    "accuracy": accuracy,
+    "specificity": specificity,
+    "sensitivity": sensitivity,
+    "precision": precision,
+    "root mean absolute error": np.sqrt(mae),
+    "mean cv accuracy": np.mean(cv_scores)
+}
+
+# Append to the DataFrame
+model_metrics_df = model_metrics_df.append(new_metrics, ignore_index=True)
+
+# (Optional) Save the updated DataFrame if needed:
+# model_metrics_df.to_pickle('model_metrics_df.pkl')
+# OR
+# model_metrics_df.to_csv('model_metrics_df.csv', index=False)
