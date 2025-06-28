@@ -1,27 +1,33 @@
-# Cell 2: Prepare features, labels, and split data with balanced Attrition
+# Cell 2: Compute and visualize correlation matrix to identify features with no correlation to Attrition
+# Uses only matplotlib (no seaborn dependency)
 
-# Map Attrition to binary
-train['Attrition'] = train['Attrition'].map({'Yes': 1, 'No': 0})
+# Compute correlation matrix using only numeric columns
+cor_matrix = train.corr(numeric_only=True)
 
-# Create balanced sample (50% "Yes", 50% "No")
-yes_df = train[train['Attrition'] == 1]
-no_df = train[train['Attrition'] == 0]
-min_count = min(len(yes_df), len(no_df))
+# Correlation of all features with 'Attrition'
+corr_with_attrition = cor_matrix['Attrition'].drop('Attrition').sort_values(key=abs, ascending=False)
+print("Correlation of features with Attrition:")
+print(corr_with_attrition)
 
-# Sample min_count from each group to ensure balance
-yes_sample = yes_df.sample(n=min_count, random_state=42)
-no_sample = no_df.sample(n=min_count, random_state=42)
+# Show features with low correlation (absolute value < 0.01)
+no_corr_features = corr_with_attrition[abs(corr_with_attrition) < 0.01].index.tolist()
+print("\nFeatures with near-zero correlation to Attrition (|corr| < 0.01):")
+print(no_corr_features)
 
-# Combine and shuffle
-balanced_train = pd.concat([yes_sample, no_sample]).sample(frac=1, random_state=42).reset_index(drop=True)
+# Visualize correlation matrix as a heatmap using matplotlib only
+plt.figure(figsize=(12, 8))
+plt.imshow(cor_matrix, cmap='coolwarm', interpolation='nearest')
+plt.colorbar()
+plt.xticks(range(len(cor_matrix.columns)), cor_matrix.columns, rotation=90)
+plt.yticks(range(len(cor_matrix.index)), cor_matrix.index)
+plt.title('Correlation Matrix (All Features)')
+plt.tight_layout()
+plt.show()
 
-columns_to_drop = ['EmployeeNumber', 'Attrition'] if 'EmployeeNumber' in balanced_train.columns else ['Attrition']
-X = pd.get_dummies(balanced_train.drop(columns=columns_to_drop))
-y = balanced_train['Attrition']
-
-# Prepare test data with aligned columns (optional, for future use)
-X_test = pd.get_dummies(test.drop(columns=['EmployeeNumber']) if 'EmployeeNumber' in test.columns else test)
-X_test = X_test.reindex(columns=X.columns, fill_value=0)
-
-# Split data
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+# Optionally, plot only correlations with Attrition as a bar chart
+plt.figure(figsize=(4, len(corr_with_attrition) * 0.4))
+plt.barh(corr_with_attrition.index, corr_with_attrition.values)
+plt.title('Feature Correlation with Attrition')
+plt.xlabel('Correlation Coefficient')
+plt.tight_layout()
+plt.show()
