@@ -1,18 +1,26 @@
-# Cell 2b: Remove "Employee Count" and "Standard Hours" columns due to no correlation with Attrition
+# Cell 2b: Identify features with weak or NaN correlation with Attrition and visualize
 
-# Documenting removal: These columns are removed because their correlation with Attrition is zero or near-zero,
-# meaning they provide no predictive value for the models.
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-cols_to_remove = []
-for col in ["Employee Count", "Standard Hours"]:
-    if col in balanced_train.columns:
-        cols_to_remove.append(col)
+# Identify features to remove: correlation is NaN or between -0.1 and 0.1 (exclusive)
+corr_mask = corr_with_attrition.isna() | ((corr_with_attrition > -0.1) & (corr_with_attrition < 0.1))
+cols_to_remove = corr_with_attrition[corr_mask].index.tolist()
 
 if cols_to_remove:
-    print(f"Removing columns due to no correlation with Attrition: {cols_to_remove}")
-    balanced_train = balanced_train.drop(columns=cols_to_remove)
+    print(f"Columns with weak or NaN correlation with Attrition: {cols_to_remove}")
 
-# Update features for modeling
-columns_to_drop = ['EmployeeNumber', 'Attrition'] + cols_to_remove if 'EmployeeNumber' in balanced_train.columns else ['Attrition'] + cols_to_remove
-X = pd.get_dummies(balanced_train.drop(columns=columns_to_drop))
-y = balanced_train['Attrition']
+# Create a new dataframe, model_train, that excludes columns to remove
+model_train = train.drop(columns=[col for col in cols_to_remove if col in train.columns])
+
+# Table visualization of the correlation matrix, highlighting features to be removed in red font
+cor_df = corr_with_attrition.to_frame(name='Correlation')
+cor_df['To Remove'] = cor_df.index.isin(cols_to_remove)
+styled = cor_df.style.apply(
+    lambda col: ['color: red' if rem else '' for rem in cor_df['To Remove']],
+    subset=['Correlation']
+).format({'Correlation': "{:.2f}"})
+
+from IPython.display import display
+display(styled)
