@@ -13,9 +13,15 @@ import pandas as pd
 
 # --- Define features (X) and labels (y) from train_balanced ---
 # Adjust 'target_column_name' to your actual target column
+# target_column = 'Attrition'  # replace with your actual target column name if different
+# X = train_balanced.drop(columns=[target_column])
+# y = train_balanced[target_column]
+
+# --- Define features (X) and labels (y) from train_unbalanced ---
+# Adjust 'target_column_name' to your actual target column
 target_column = 'Attrition'  # replace with your actual target column name if different
-X = train_balanced.drop(columns=[target_column])
-y = train_balanced[target_column]
+X = train_unbalanced.drop(columns=[target_column])
+y = train_unbalanced[target_column]
 
 # --- Split into train and test sets (80% train, 20% test) ---
 X_train, X_val, y_train, y_val = train_test_split(
