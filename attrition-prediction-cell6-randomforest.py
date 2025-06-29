@@ -1,14 +1,25 @@
 # Cell 6: Random Forest
 
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (
     accuracy_score, classification_report, confusion_matrix,
     ConfusionMatrixDisplay, mean_absolute_error
 )
-from sklearn.model_selection import cross_val_score
+from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+# --- Define features (X) and labels (y) from train_balanced ---
+target_column = 'Attrition'  # Change this if your target column name is different
+X = train_balanced.drop(columns=[target_column])
+y = train_balanced[target_column]
+
+# --- Split into train and test sets (80% train, 20% test) ---
+X_train, X_val, y_train, y_val = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
 
 # --- Train Random Forest Classifier ---
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -37,7 +48,6 @@ plt.xlabel("Accuracy")
 plt.show()
 
 # --- Calculate Root Mean Absolute Error (RMAE) ---
-from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 y_val_num = le.fit_transform(y_val)
 y_pred_rf_num = le.transform(y_pred_rf)
@@ -45,7 +55,7 @@ mae_rf = mean_absolute_error(y_val_num, y_pred_rf_num)
 rmae_rf = np.sqrt(mae_rf)
 print("Root Mean Absolute Error (RMAE):", rmae_rf)
 
-# --- Compute Metrics for model_metrics_df ---
+# --- Computing Metrics for model_metrics_df ---
 TN, FP, FN, TP = cm_rf.ravel()
 specificity = TN / (TN + FP) if (TN + FP) > 0 else 0
 sensitivity = TP / (TP + FN) if (TP + FN) > 0 else 0
@@ -54,7 +64,7 @@ precision = TP / (TP + FP) if (TP + FP) > 0 else 0
 
 # --- Append results to model_metrics_df using pd.concat ---
 new_metrics = {
-    "ML Model": "Rnadom Forest",  # Consider changing to "Random Forest"
+    "ML Model": "Random Forest",
     "accuracy": accuracy,
     "specificity": specificity,
     "sensitivity": sensitivity,
