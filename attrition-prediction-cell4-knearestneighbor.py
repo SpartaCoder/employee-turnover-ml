@@ -55,3 +55,30 @@ y_pred_knn_num = le.transform(y_pred_knn)
 mae_knn = mean_absolute_error(y_val_num, y_pred_knn_num)
 rmae_knn = np.sqrt(mae_knn)
 print("Root Mean Absolute Error (RMAE):", rmae_knn)
+
+# --- Compute Metrics for model_metrics_df ---
+TN, FP, FN, TP = cm_knn.ravel()
+specificity = TN / (TN + FP) if (TN + FP) > 0 else 0
+sensitivity = TP / (TP + FN) if (TP + FN) > 0 else 0
+accuracy = (TP + TN) / (TP + TN + FP + FN) if (TP + TN + FP + FN) > 0 else 0
+precision = TP / (TP + FP) if (TP + FP) > 0 else 0
+
+# --- Append results to model_metrics_df using pd.concat ---
+new_metrics = {
+    "ML Model": "K-Nearest Neighbors",
+    "accuracy": accuracy,
+    "specificity": specificity,
+    "sensitivity": sensitivity,
+    "precision": precision,
+    "root mean absolute error": rmae_knn,
+    "mean cv accuracy": np.mean(cv_scores_knn)
+}
+
+model_metrics_df = pd.concat(
+    [model_metrics_df, pd.DataFrame([new_metrics])],
+    ignore_index=True
+)
+
+# (Optional) Save if needed
+# model_metrics_df.to_pickle('model_metrics_df.pkl')
+# model_metrics_df.to_csv('model_metrics_df.csv', index=False)
