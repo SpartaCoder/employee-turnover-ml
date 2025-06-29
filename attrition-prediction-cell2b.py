@@ -1,5 +1,6 @@
 # Cell 2b: Balance dataset by copying selected columns from train where Attrition == "Yes",
-# add equal number of random "No" records, and visualize feature missingness by Attrition as a stacked bar chart.
+# add equal number of random "No" records, visualize feature missingness by Attrition as a stacked bar chart,
+# and copy selected columns from train to train_unbalanced.
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -22,7 +23,11 @@ no_records = no_candidates.sample(n=num_yes, random_state=42).copy()  # random_s
 # Step 3: Concatenate both sets to create a balanced dataframe
 train_balanced = pd.concat([yes_records, no_records], axis=0).reset_index(drop=True)
 
-# Step 4: Compute counts of non-null values for each feature, broken down by Attrition value
+# Step 4: Create train_unbalanced with the same selected columns (but unbalanced)
+#         Only the columns where "To Remove" is False from corr_df are kept.
+train_unbalanced = train[cols_to_keep].copy()
+
+# Step 5: Compute counts of non-null values for each feature, broken down by Attrition value
 # Exclude 'Attrition' itself from the features to plot
 features = [col for col in cols_to_keep if col != 'Attrition']
 counts_by_attrition = (
@@ -31,7 +36,7 @@ counts_by_attrition = (
     .T  # Transpose for plotting (features on x-axis)
 )
 
-# Step 5: Plot as a stacked bar chart
+# Step 6: Plot as a stacked bar chart
 counts_by_attrition.plot(
     kind='bar',
     stacked=True,
