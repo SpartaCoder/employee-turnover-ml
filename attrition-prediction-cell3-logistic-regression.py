@@ -13,8 +13,12 @@ import numpy as np
 import pandas as pd  # Make sure pandas is imported for concat
 
 # --- Prepare features (X) and target (y) from train_balanced DataFrame ---
-X = train_balanced.drop('Attrition', axis=1)
-y = train_balanced['Attrition']
+# X = train_balanced.drop('Attrition', axis=1)
+# y = train_balanced['Attrition']
+
+# --- Prepare features (X) and target (y) from train_unbalanced DataFrame ---
+X = train_unbalanced.drop('Attrition', axis=1)
+y = train_unbalanced['Attrition']
 
 # --- Split data into 80% train and 20% test sets ---
 X_train, X_test, y_train, y_test = train_test_split(
