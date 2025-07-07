@@ -3,9 +3,6 @@
 # Purpose: Identify features with little or no correlation to Attrition
 # Dependencies: Uses only matplotlib (no seaborn needed)
 # ================================================
-
-import matplotlib.pyplot as plt
-
 # --- Convert Attrition to numeric if necessary ---
 # This ensures the Attrition column is numeric for correlation analysis:
 # 'Yes' becomes 1, 'No' becomes 0.
