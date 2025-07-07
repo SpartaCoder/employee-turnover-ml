@@ -5,19 +5,6 @@
 #   - Evaluate model performance using multiple metrics
 #   - Store results for comparison with other models
 # ================================================
-
-# --- Import required libraries ---
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (
-    accuracy_score, classification_report, confusion_matrix,
-    ConfusionMatrixDisplay, mean_absolute_error
-)
-from sklearn.preprocessing import LabelEncoder
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd  # For DataFrame operations
-
 # --- Prepare features (X) and target (y) ---
 # The model uses the 'train_unbalanced' DataFrame with relevant features and the target column 'Attrition'.
 X = train_unbalanced.drop('Attrition', axis=1)
