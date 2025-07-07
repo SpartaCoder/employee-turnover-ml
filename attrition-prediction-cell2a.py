@@ -2,11 +2,6 @@
 # Cell 2a: Identify and Visualize Features with Weak Correlation to Attrition
 # Purpose: Remove features that have very weak or NaN correlation with Attrition, and visualize this process.
 # ================================================
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-
 # --- Define weak correlation mask ---
 # Features are marked for removal if their correlation with Attrition is:
 #   - NaN (not a number, i.e., undefined correlation)
