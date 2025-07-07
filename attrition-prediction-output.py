@@ -1,5 +1,5 @@
 # ==========================
-# Employee Attrition Prediction Output Script
+# Employee Attrition Prediction Output
 # ==========================
 
 # --- Identify the top models and save their predictions ---
