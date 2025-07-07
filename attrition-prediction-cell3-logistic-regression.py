@@ -89,4 +89,11 @@ model_metrics_df = pd.concat(
 # --- Predict Attrition on the Test DataFrame from Cell 1 and Store Results ---
 # Ensure 'test' has the same features/columns as X_train (may require preprocessing)
 LogisticRegressionOutput = test.copy()
+
+# Get predicted probabilities for each class (assumes binary classification: 0 = 'No', 1 = 'Yes')
+probs = logreg.predict_proba(test[X_train.columns])
+LogisticRegressionOutput['Attrition_Prob_No'] = probs[:, 0]   # Probability of NOT leaving (pass)
+LogisticRegressionOutput['Attrition_Prob_Yes'] = probs[:, 1]  # Probability of leaving (fail)
+
+# Predicted value (as before)
 LogisticRegressionOutput['Attrition_Prediction'] = logreg.predict(test[X_train.columns])
