@@ -3,18 +3,19 @@
 # Project: Employee Turnover ML (IBM Kaggle Dataset)
 # Description: Prepare environment, import core libraries, and load datasets
 # ================================================
-
 # --- Import essential Python libraries ---
 import pandas as pd                           # Data manipulation and analysis
 import numpy as np                            # Numerical operations
 import matplotlib.pyplot as plt               # Data visualization
 
 # --- Import scikit-learn utilities for ML workflow ---
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split, cross_val_score  # Data splitting & model validation
 from sklearn.metrics import (classification_report,                    # Model evaluation tools
                              accuracy_score,
                              confusion_matrix,
-                             ConfusionMatrixDisplay)
+                             ConfusionMatrixDisplay,
+                             mean_absolute_error)
 
 # --- Import classifiers to be used ---
 from sklearn.linear_model import LogisticRegression         # Logistic Regression classifier
