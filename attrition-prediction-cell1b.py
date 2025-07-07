@@ -1,4 +1,4 @@
-# Cell 1a: Bar charts showing % of records with Attrition = "Yes" by each column in the dataset
+# Cell 1b: Bar charts showing % of records with Attrition = "Yes" by each column in the dataset
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
