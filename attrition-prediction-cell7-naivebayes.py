@@ -5,18 +5,6 @@
 #   - Evaluate its performance using a suite of metrics and visualizations
 #   - Store results for comparison with other machine learning models
 # ================================================
-
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import (
-    accuracy_score, classification_report, confusion_matrix,
-    ConfusionMatrixDisplay, mean_absolute_error
-)
-from sklearn.preprocessing import LabelEncoder
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
 # --- Prepare feature matrix (X) and target vector (y) ---
 # Using 'train_unbalanced' DataFrame. You can swap to 'train_balanced' if desired.
 target_column = 'Attrition'  # Change this if your target column name is different
