@@ -1,38 +1,42 @@
 # ================================================
 # Cell 1a: Null Value Check, Imputation, and Visualization
 # ================================================
+
 import pandas as pd
 import numpy as np
 
-# Function to check and impute nulls, and generate a summary table
+# This function checks a DataFrame for null values,
+# imputes missing values (mean for numerics, mode for categoricals),
+# and generates a summary table describing the imputation.
 def nulls_imputation_summary(df, df_name="DataFrame"):
-    summary = []
+    summary = []  # Collects summary rows for columns with missing values
+
     for col in df.columns:
-        null_count = df[col].isnull().sum()
-        non_null_count = df[col].notnull().sum()
-        percent_null = (null_count / len(df)) * 100
+        null_count = df[col].isnull().sum()        # Number of missing values
+        non_null_count = df[col].notnull().sum()   # Number of present values
+        percent_null = (null_count / len(df)) * 100  # Percent of missing values
         
+        # If we have missing values in this column, perform imputation
         if null_count > 0:
-            # Determine type for imputation
             if pd.api.types.is_numeric_dtype(df[col]):
-                # Numeric: use mean
+                # For numeric columns, use the mean for imputation
                 impute_value = df[col].mean()
                 impute_type = "mean"
             else:
-                # Categorical: use mode
+                # For categorical columns, use the mode for imputation
                 impute_value = df[col].mode().iloc[0] if not df[col].mode().empty else np.nan
                 impute_type = "mode"
-            # Impute missing values
+            # Fill missing values in place
             df[col].fillna(impute_value, inplace=True)
         else:
             impute_value = np.nan
             impute_type = None
         
-        # Always get the mean and mode for reporting
+        # Always calculate column mean and mode for reporting purposes
         col_mean = df[col].mean() if pd.api.types.is_numeric_dtype(df[col]) else np.nan
         col_mode = df[col].mode().iloc[0] if not df[col].mode().empty else np.nan
         
-        # Only append rows with original nulls for the table
+        # Only add columns with original nulls to the summary table
         if null_count > 0:
             summary.append({
                 'column': col,
@@ -42,17 +46,19 @@ def nulls_imputation_summary(df, df_name="DataFrame"):
                 'mean_used_for_imputation': col_mean,
                 'mode_used_for_imputation': col_mode
             })
-    # Convert summary to DataFrame for pretty display
+
+    # Create a summary DataFrame for visualization
     summary_df = pd.DataFrame(summary, columns=[
         'column', 'null_count', 'non_null_count', 'percent_null',
         'mean_used_for_imputation', 'mode_used_for_imputation'
     ])
     print(f"\nNull Value Imputation Summary for {df_name}:")
     if not summary_df.empty:
+        # Use display() in Jupyter; use print(summary_df) otherwise
         display(summary_df)
     else:
         print("No null values found.")
 
-# Check and impute nulls in train and test, and visualize
+# Apply null checking and imputation on both train and test DataFrames
 nulls_imputation_summary(train, df_name="train")
 nulls_imputation_summary(test, df_name="test")
