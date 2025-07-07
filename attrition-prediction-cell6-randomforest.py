@@ -84,4 +84,8 @@ model_metrics_df = pd.concat(
 
 # --- Predict Attrition on the test set using the trained Random Forest model ---
 RandomForestPredictionOutput = test.copy()
+# Get predicted probabilities for each class (assumes binary: 0 = No, 1 = Yes)
+probabilities = rf.predict_proba(test)
 RandomForestPredictionOutput['Attrition_Prediction'] = rf.predict(test)
+RandomForestPredictionOutput['Probability_No'] = probabilities[:, 0]  # Probability of 'No' attrition
+RandomForestPredictionOutput['Probability_Yes'] = probabilities[:, 1]  # Probability of 'Yes' attrition
