@@ -5,18 +5,6 @@
 #   - Evaluate its performance using multiple metrics and visualizations
 #   - Store results for comparison with other machine learning models
 # ================================================
-
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import (
-    accuracy_score, classification_report, confusion_matrix,
-    ConfusionMatrixDisplay, mean_absolute_error
-)
-from sklearn.preprocessing import LabelEncoder
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
 # --- Prepare feature matrix (X) and target vector (y) ---
 # This example uses 'train_unbalanced', but you can swap with 'train_balanced' as needed.
 target_column = 'Attrition'  # Change this if your target column name is different
