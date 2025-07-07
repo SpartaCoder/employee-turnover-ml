@@ -1,47 +1,51 @@
-# Cell 2b: Balance dataset by copying selected columns from train where Attrition == "Yes",
-# add equal number of random "No" records, visualize feature missingness by Attrition as a stacked bar chart,
-# and copy selected columns from train to train_unbalanced.
+# ================================================
+# Cell 2b: Create a Balanced Dataset and Visualize Feature Missingness
+# Context: 
+#   - Balance data by matching the number of "Attrition = Yes" and "Attrition = No" records.
+#   - Include only features with meaningful correlation to Attrition (from cor_df).
+#   - Visualize the completeness (non-null counts) of features by Attrition class.
+# ================================================
 
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Assuming cor_df is available from attrition-prediction-cell2a.py and contains "To Remove" column
+# --- Step 0: Define which columns to keep based on prior correlation analysis ---
+# cor_df is assumed to be available from the previous analysis (cell2a), with "To Remove" column.
 cols_to_keep = cor_df[cor_df["To Remove"] == False].index.tolist()
 
-# Ensure 'Attrition' is included for filtering and plotting
+# Always ensure 'Attrition' column is included for filtering and visualization
 if 'Attrition' not in cols_to_keep:
     cols_to_keep.append('Attrition')
 
-# Step 1: Select all records with Attrition == "Yes" and only the relevant columns
+# --- Step 1: Select all records where Attrition == "Yes" (the minority class), keeping only relevant columns ---
 yes_records = train.loc[train['Attrition'] == 'Yes', cols_to_keep].copy()
 
-# Step 2: Select an equal number of random records with Attrition == "No"
+# --- Step 2: Randomly select an equal number of "No" records for a balanced dataset ---
 num_yes = len(yes_records)
 no_candidates = train.loc[train['Attrition'] == 'No', cols_to_keep]
-no_records = no_candidates.sample(n=num_yes, random_state=42).copy()  # random_state for reproducibility
+no_records = no_candidates.sample(n=num_yes, random_state=42).copy()  # random_state ensures reproducibility
 
-# Step 3: Concatenate both sets to create a balanced dataframe
+# --- Step 3: Concatenate "Yes" and "No" samples to create a balanced DataFrame ---
 train_balanced = pd.concat([yes_records, no_records], axis=0).reset_index(drop=True)
 
-# Step 4: Create train_unbalanced with the same selected columns (but unbalanced)
-#         Only the columns where "To Remove" is False from corr_df are kept.
+# --- Step 4: Create an unbalanced dataset with the same selected columns for comparison ---
 train_unbalanced = train[cols_to_keep].copy()
 
-# Step 5: Compute counts of non-null values for each feature, broken down by Attrition value
-# Exclude 'Attrition' itself from the features to plot
-features = [col for col in cols_to_keep if col != 'Attrition']
+# --- Step 5: Calculate counts of non-null values for each feature, broken down by Attrition value ---
+# This helps visualize the "missingness" or completeness of each feature across classes.
+features = [col for col in cols_to_keep if col != 'Attrition']  # Exclude target column from feature list
 counts_by_attrition = (
     train_balanced.groupby('Attrition')[features]
     .apply(lambda df: df.notnull().sum())
-    .T  # Transpose for plotting (features on x-axis)
+    .T  # Transpose so features are on the x-axis for plotting
 )
 
-# Step 6: Plot as a stacked bar chart
+# --- Step 6: Visualize feature missingness as a stacked bar chart ---
 counts_by_attrition.plot(
     kind='bar',
     stacked=True,
     figsize=(12, 6),
-    color=['#1f77b4', '#ff7f0e'],
+    color=['#1f77b4', '#ff7f0e'],  # Color for "No" and "Yes"
     edgecolor='black'
 )
 plt.title('Non-Null Record Count by Feature (Stacked by Attrition)')
