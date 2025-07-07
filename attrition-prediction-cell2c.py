@@ -3,9 +3,6 @@
 # Purpose: Provide a standardized DataFrame to store and compare evaluation metrics
 #          for each machine learning model used in the attrition prediction workflow.
 # ================================================
-
-import pandas as pd
-
 # --- Step 1: Define the columns for model evaluation metrics ---
 # These columns will hold the key metrics for model comparison.
 metrics_columns = [
