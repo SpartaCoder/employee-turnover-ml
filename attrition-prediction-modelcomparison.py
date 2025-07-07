@@ -5,9 +5,6 @@
 #   - Use pandas styling for enhanced readability and visual insight
 #   - Assumes 'model_metrics_df' is already defined and contains metrics for each model
 # ================================================
-
-import pandas as pd
-
 # Print heading for clarity in notebook output or logs
 print("## Model Comparison Table")
 
