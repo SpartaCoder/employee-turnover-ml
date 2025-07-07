@@ -82,4 +82,8 @@ model_metrics_df = pd.concat(
 # --- Predict Attrition on the Test DataFrame from Cell 1 and Store Results ---
 # Ensure the test set has the same feature columns as X_train.
 DecisionTreeOutput = test.copy()
+probs = dtree.predict_proba(test[X_train.columns])
+# Assuming 'No' (not leaving) is class 0 and 'Yes' (leaving) is class 1
+DecisionTreeOutput['Pass_Probability'] = probs[:, 0]
+DecisionTreeOutput['Fail_Probability'] = probs[:, 1]
 DecisionTreeOutput['Attrition_Prediction'] = dtree.predict(test[X_train.columns])
