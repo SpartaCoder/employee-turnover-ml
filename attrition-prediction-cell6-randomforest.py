@@ -84,4 +84,4 @@ model_metrics_df = pd.concat(
 
 # --- Predict Attrition on the test set using the trained Random Forest model ---
 RandomForestPredictionOutput = test.copy()
-RandomForestPredictionOutput['Attrition_Prediction'] = rf.predict(test.drop(columns=[target_column]))
+RandomForestPredictionOutput['Attrition_Prediction'] = rf.predict(test)
