@@ -85,3 +85,8 @@ model_metrics_df = pd.concat(
 # --- (Optional) Save the updated metrics DataFrame to disk for later use ---
 # model_metrics_df.to_pickle('model_metrics_df.pkl')
 # model_metrics_df.to_csv('model_metrics_df.csv', index=False)
+
+# --- Predict Attrition on the Test DataFrame from Cell 1 and Store Results ---
+# Ensure 'test' has the same features/columns as X_train (may require preprocessing)
+LogisticRegressionOutput = test.copy()
+LogisticRegressionOutput['Attrition_Prediction'] = logreg.predict(test[X_train.columns])
