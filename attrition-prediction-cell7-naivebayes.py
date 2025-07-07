@@ -82,4 +82,8 @@ model_metrics_df = pd.concat(
 # --- Predict Attrition on the Test DataFrame from Cell 1 and Store Results ---
 # Ensure the test set has the same feature columns as X_train.
 NaiveBayesOutput = test.copy()
+probs = nb.predict_proba(test[X_train.columns])
+# Assuming 'No' = 0 (not leaving), 'Yes' = 1 (leaving); adjust as needed if your label encoding is different.
+NaiveBayesOutput['Pass_Probability'] = probs[:, 0]  # Probability of 'No'
+NaiveBayesOutput['Fail_Probability'] = probs[:, 1]  # Probability of 'Yes'
 NaiveBayesOutput['Attrition_Prediction'] = nb.predict(test[X_train.columns])
