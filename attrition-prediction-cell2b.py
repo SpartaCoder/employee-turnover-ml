@@ -5,10 +5,6 @@
 #   - Include only features with meaningful correlation to Attrition (from cor_df).
 #   - Visualize the completeness (non-null counts) of features by Attrition class.
 # ================================================
-
-import pandas as pd
-import matplotlib.pyplot as plt
-
 # --- Step 0: Define which columns to keep based on prior correlation analysis ---
 # cor_df is assumed to be available from the previous analysis (cell2a), with "To Remove" column.
 cols_to_keep = cor_df[cor_df["To Remove"] == False].index.tolist()
