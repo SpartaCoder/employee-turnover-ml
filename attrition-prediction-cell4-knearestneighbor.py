@@ -82,4 +82,8 @@ model_metrics_df = pd.concat(
 # --- Predict Attrition on the Test DataFrame from Cell 1 and Store Results ---
 # Ensure the test set has the same feature columns as X_train.
 K_NearestNeighborOutput = test.copy()
+proba = knn.predict_proba(test[X_train.columns])
+# Assuming 'Yes' = attrition, 'No' = stay; adjust column order if needed
+K_NearestNeighborOutput['Fail_Probability'] = proba[:, list(knn.classes_).index('Yes')]
+K_NearestNeighborOutput['Pass_Probability'] = proba[:, list(knn.classes_).index('No')]
 K_NearestNeighborOutput['Attrition_Prediction'] = knn.predict(test[X_train.columns])
