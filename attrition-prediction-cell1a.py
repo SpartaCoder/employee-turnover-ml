@@ -1,10 +1,6 @@
 # ================================================
 # Cell 1a: Null Value Check, Imputation, and Visualization
 # ================================================
-
-import pandas as pd
-import numpy as np
-
 # This function checks a DataFrame for null values,
 # imputes missing values (mean for numerics, mode for categoricals),
 # and generates a summary table describing the imputation.
