@@ -1,4 +1,10 @@
-# Cell 7: Naive Bayes
+# ================================================
+# Cell 7: Naive Bayes Classifier - Training, Evaluation, and Metrics Logging
+# Purpose:
+#   - Train a Naive Bayes classifier for employee attrition prediction
+#   - Evaluate its performance using a suite of metrics and visualizations
+#   - Store results for comparison with other machine learning models
+# ================================================
 
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.naive_bayes import GaussianNB
@@ -11,38 +17,34 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# --- Define features (X) and labels (y) from train_balanced ---
-# target_column = 'Attrition'  # Change this if your target column name is different
-# X = train_balanced.drop(columns=[target_column])
-# y = train_balanced[target_column]
-
-# --- Define features (X) and labels (y) from train_unbalanced ---
+# --- Prepare feature matrix (X) and target vector (y) ---
+# Using 'train_unbalanced' DataFrame. You can swap to 'train_balanced' if desired.
 target_column = 'Attrition'  # Change this if your target column name is different
 X = train_unbalanced.drop(columns=[target_column])
 y = train_unbalanced[target_column]
 
-# --- Split into train and test sets (80% train, 20% test) ---
+# --- Split data: 80% training, 20% validation, stratified to preserve class balance ---
 X_train, X_val, y_train, y_val = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# --- Train Naive Bayes Classifier ---
+# --- Initialize and train the Naive Bayes model ---
 nb = GaussianNB()
 nb.fit(X_train, y_train)
 
-# --- Predict and Evaluate on Validation Set ---
+# --- Predict and evaluate on the validation set ---
 y_pred_nb = nb.predict(X_val)
 print("Naive Bayes Validation Accuracy:", accuracy_score(y_val, y_pred_nb))
 print("Classification Report:\n", classification_report(y_val, y_pred_nb))
 
-# --- Confusion Matrix ---
+# --- Display the confusion matrix for validation results ---
 cm_nb = confusion_matrix(y_val, y_pred_nb)
 disp_nb = ConfusionMatrixDisplay(confusion_matrix=cm_nb, display_labels=['No', 'Yes'])
 disp_nb.plot(cmap=plt.cm.Blues)
 plt.title('Confusion Matrix: Naive Bayes')
 plt.show()
 
-# --- 10-Fold Cross Validation ---
+# --- Perform 10-fold cross-validation for model robustness ---
 cv_scores_nb = cross_val_score(nb, X, y, cv=10)
 print("10-Fold CV Scores:", cv_scores_nb)
 print("Mean CV:", np.mean(cv_scores_nb))
@@ -52,7 +54,8 @@ plt.title("10-Fold CV Accuracy: Naive Bayes")
 plt.xlabel("Accuracy")
 plt.show()
 
-# --- Calculate Root Mean Absolute Error (RMAE) ---
+# --- Calculate Root Mean Absolute Error (RMAE) on validation set ---
+# Encode string labels for numerical calculation
 le = LabelEncoder()
 y_val_num = le.fit_transform(y_val)
 y_pred_nb_num = le.transform(y_pred_nb)
@@ -60,14 +63,15 @@ mae_nb = mean_absolute_error(y_val_num, y_pred_nb_num)
 rmae_nb = np.sqrt(mae_nb)
 print("Root Mean Absolute Error (RMAE):", rmae_nb)
 
-# --- Computing Metrics for model_metrics_df ---
+# --- Compute additional metrics for summary table ---
+# Unpack confusion matrix: [[TN, FP], [FN, TP]]
 TN, FP, FN, TP = cm_nb.ravel()
 specificity = TN / (TN + FP) if (TN + FP) > 0 else 0
 sensitivity = TP / (TP + FN) if (TP + FN) > 0 else 0
 accuracy = (TP + TN) / (TP + TN + FP + FN) if (TP + TN + FP + FN) > 0 else 0
 precision = TP / (TP + FP) if (TP + FP) > 0 else 0
 
-# --- Append results to model_metrics_df using pd.concat ---
+# --- Prepare and append results to the metrics DataFrame for model comparison ---
 new_metrics = {
     "ML Model": "Naive Bayes",
     "accuracy": accuracy,
@@ -83,6 +87,6 @@ model_metrics_df = pd.concat(
     ignore_index=True
 )
 
-# (Optional) Save if needed
+# --- (Optional) Save the metrics DataFrame for later analysis ---
 # model_metrics_df.to_pickle('model_metrics_df.pkl')
 # model_metrics_df.to_csv('model_metrics_df.csv', index=False)
