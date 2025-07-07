@@ -1,11 +1,21 @@
+# ================================================
 # Cell: Visualize Model Metrics Table
+# Purpose:
+#   - Display a comparative summary of model metrics collected during training and evaluation
+#   - Use pandas styling for enhanced readability and visual insight
+#   - Assumes 'model_metrics_df' is already defined and contains metrics for each model
+# ================================================
+
 import pandas as pd
 
-# Assuming model_metrics_df is already loaded in your notebook
-
+# Print heading for clarity in notebook output or logs
 print("## Model Comparison Table")
 
-# Style the dataframe for better readability
+# --- Style the DataFrame for improved readability and insight ---
+# - Set a table caption for context
+# - Format all numeric columns to 3 decimal places for consistency
+# - Highlight 'accuracy' and 'mean cv accuracy' metrics using a blue gradient for quick visual comparison
+# - Hide the index for a cleaner look
 styled_df = (
     model_metrics_df.style
     .set_caption("Model Metrics Comparison")
@@ -20,4 +30,6 @@ styled_df = (
     .background_gradient(cmap="Blues", subset=["accuracy", "mean cv accuracy"])
     .hide_index()
 )
+
+# --- Display the styled DataFrame (Jupyter/IPython only) ---
 display(styled_df)
