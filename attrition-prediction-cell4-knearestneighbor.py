@@ -5,18 +5,6 @@
 #   - Assess performance using various evaluation metrics and plots
 #   - Store results for comparison with other models in a metrics DataFrame
 # ================================================
-
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import (
-    accuracy_score, classification_report, confusion_matrix,
-    ConfusionMatrixDisplay, mean_absolute_error
-)
-from sklearn.preprocessing import LabelEncoder
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
 # --- Prepare feature matrix (X) and target vector (y) ---
 # You may swap between 'train_balanced' or 'train_unbalanced' as needed.
 target_column = 'Attrition'
