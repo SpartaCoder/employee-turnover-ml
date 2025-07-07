@@ -78,3 +78,10 @@ model_metrics_df = pd.concat(
 # --- (Optional) Save the metrics DataFrame for later analysis ---
 # model_metrics_df.to_pickle('model_metrics_df.pkl')
 # model_metrics_df.to_csv('model_metrics_df.csv', index=False)
+
+# --- Load the test DataFrame (assumed loaded as 'test' from attrition-prediction-cell1.py) ---
+# If not already loaded, import or load it here. Example: from attrition-prediction-cell1 import test
+
+# --- Predict Attrition on the test set using the trained Random Forest model ---
+RandomForestPredictionOutput = test.copy()
+RandomForestPredictionOutput['Attrition_Prediction'] = rf.predict(test.drop(columns=[target_column]))
