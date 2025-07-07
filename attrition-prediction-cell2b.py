@@ -1,5 +1,5 @@
 # ================================================
-# Cell 2b: Create a Balanced Dataset and Visualize Feature Missingness
+# Cell 2b: Create a Balanced Dataset and Visualize Feature with NULL values
 # Context: 
 #   - Balance data by matching the number of "Attrition = Yes" and "Attrition = No" records.
 #   - Include only features with meaningful correlation to Attrition (from cor_df).
