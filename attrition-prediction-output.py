@@ -14,7 +14,7 @@ models_to_save = set([top_accuracy_model, top_cv_model, top_precision_model])
 
 for model_name in models_to_save:
     if model_name == "Logistic Regression":
-        LogicRegressionOutput.to_csv("LogicRegressionOutput.csv", index=False)
+        LogisticRegressionOutput.to_csv("LogicRegressionOutput.csv", index=False)
     elif model_name == "K-Nearest Neighbors":
         K_NearestNeighborOutput.to_csv("K_NearestNeighborOutput.csv", index=False)
     elif model_name == "Decision Tree":
