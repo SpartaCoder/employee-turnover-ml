@@ -1,11 +1,6 @@
 # ================================================
 # Cell 1b: Bar Charts - % Attrition ("Yes") by Feature
 # ================================================
-
-import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
-
 # This cell loops through each feature (column) in the `train` DataFrame (except 'Attrition')
 # and creates a bar chart showing the percentage of records with Attrition = "Yes" for each value/bin,
 # or, for high-cardinality categorical columns, simply shows the value counts.
