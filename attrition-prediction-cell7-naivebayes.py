@@ -78,3 +78,8 @@ model_metrics_df = pd.concat(
 # --- (Optional) Save the metrics DataFrame for later analysis ---
 # model_metrics_df.to_pickle('model_metrics_df.pkl')
 # model_metrics_df.to_csv('model_metrics_df.csv', index=False)
+
+# --- Predict Attrition on the Test DataFrame from Cell 1 and Store Results ---
+# Ensure the test set has the same feature columns as X_train.
+NaiveBayesOutput = test.copy()
+NaiveBayesOutput['Attrition_Prediction'] = nb.predict(test[X_train.columns])
