@@ -1,3 +1,9 @@
+# ================================================
+# Cell 1C: Ensure test and train have same columns and order of columns
+# ================================================
+# This cell loops through each feature (column) in the `train` DataFrame (except 'Attrition')
+# and creates a bar chart showing the percentage of records with Attrition = "Yes" for each value/bin,
+# or, for high-cardinality categorical columns, simply shows the value counts.
 # Assuming 'train' and 'test' DataFrames are already loaded in your environment
 # If not, import or define them as needed before running this script
 
