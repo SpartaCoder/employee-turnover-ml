@@ -83,9 +83,9 @@ model_metrics_df = pd.concat(
 # If not already loaded, import or load it here. Example: from attrition-prediction-cell1 import test
 
 # --- Predict Attrition on the test set using the trained Random Forest model ---
-RandomForestPredictionOutput = test.copy()
+RandomForestPredictionOutput = rf_test.copy()
 # Get predicted probabilities for each class (assumes binary: 0 = No, 1 = Yes)
-probabilities = rf.predict_proba(test)
-RandomForestPredictionOutput['Attrition_Prediction'] = rf.predict(test)
+probabilities = rf.predict_proba(rf_test)
+RandomForestPredictionOutput['Attrition_Prediction'] = rf.predict(rf_test)
 RandomForestPredictionOutput['Probability_No'] = probabilities[:, 0]  # Probability of 'No' attrition
 RandomForestPredictionOutput['Probability_Yes'] = probabilities[:, 1]  # Probability of 'Yes' attrition
