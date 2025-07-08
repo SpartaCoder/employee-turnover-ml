@@ -5,7 +5,8 @@
 #   - Include only features with meaningful correlation to Attrition (from cor_df).
 #   - Visualize the completeness (non-null counts) of features by Attrition class.
 # ================================================
-# --- Step 0: Define which columns to keep based on prior correlation analysis ---
+
+# --- Step 0: Define columns to keep based on prior correlation analysis ---
 # cor_df is assumed to be available from the previous analysis (cell2a), with "To Remove" column.
 cols_to_keep = cor_df[cor_df["To Remove"] == False].index.tolist()
 
@@ -27,7 +28,11 @@ train_balanced = pd.concat([yes_records, no_records], axis=0).reset_index(drop=T
 # --- Step 4: Create an unbalanced dataset with the same selected columns for comparison ---
 train_unbalanced = train[cols_to_keep].copy()
 
-# --- Step 5: Calculate counts of non-null values for each feature, broken down by Attrition value ---
+# --- Step 5: Create rf_test DataFrame for inference (copy of test with selected columns, excluding 'Attrition') ---
+# This DataFrame will be used for model predictions, matching the features of the training set except for the target.
+rf_test = test[[col for col in cols_to_keep if col != 'Attrition']].copy()
+
+# --- Step 6: Calculate counts of non-null values for each feature, broken down by Attrition value ---
 # This helps visualize the "missingness" or completeness of each feature across classes.
 features = [col for col in cols_to_keep if col != 'Attrition']  # Exclude target column from feature list
 counts_by_attrition = (
@@ -36,7 +41,7 @@ counts_by_attrition = (
     .T  # Transpose so features are on the x-axis for plotting
 )
 
-# --- Step 6: Visualize feature missingness as a stacked bar chart ---
+# --- Step 7: Visualize feature missingness as a stacked bar chart ---
 counts_by_attrition.plot(
     kind='bar',
     stacked=True,
