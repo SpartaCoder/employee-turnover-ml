@@ -27,16 +27,16 @@ for model_name in models_to_save:
     # Check which model corresponds to the current name and save its predictions
     if model_name == "Logistic Regression":
         # Save Logistic Regression predictions
-        LogisticRegressionOutput.to_csv("LogicRegressionOutput.csv", index=False)
+        LogisticRegressionOutput.to_csv("LogicRegressionOutput.csv", index=True)
     elif model_name == "K-Nearest Neighbors":
         # Save KNN predictions
-        K_NearestNeighborOutput.to_csv("K_NearestNeighborOutput.csv", index=False)
+        K_NearestNeighborOutput.to_csv("K_NearestNeighborOutput.csv", index=True)
     elif model_name == "Decision Tree":
         # Save Decision Tree predictions
-        DecisionTreeOutput.to_csv("DecisionTreeOutput.csv", index=False)
+        DecisionTreeOutput.to_csv("DecisionTreeOutput.csv", index=True)
     elif model_name == "Random Forest":
         # Save Random Forest predictions
-        RandomForestPredictionOutput.to_csv("RandomForestPredictionOutput.csv", index=False)
+        RandomForestPredictionOutput.to_csv("RandomForestPredictionOutput.csv", index=True)
     elif model_name == "Naive Bayes":
         # Save Naive Bayes predictions
-        NaiveBayesOutput.to_csv("NaiveBayesOutput.csv", index=False)
+        NaiveBayesOutput.to_csv("NaiveBayesOutput.csv", index=True)
